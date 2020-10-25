@@ -232,8 +232,8 @@ int main()
 		else if (input == 'd')
 		{
 			PL.SetPlayerPosition(0, 1);
-			GH0.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)));
-			GH1.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)));
+			GH0.SetGhostPosition(1 - (rand() % 3), 1 - (rand() % 3));
+			GH1.SetGhostPosition(1 - (rand() % 3), 1 - (rand() % 3));
 			first.drawmap();
 		}
 	}
