@@ -255,7 +255,7 @@ begin:
 dead:
     cout << "You are dead. Press enter to retry. " << endl;
     char c = _getch();
-    if (c = '\n')
+    if (c == '\n')
     {
         goto begin;
     }
