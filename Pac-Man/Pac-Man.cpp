@@ -110,7 +110,7 @@ void Player::SetPlayerPosition(int X, int Y)
         {
             throw (int)0;
         }
-        if (map[tempx][tempy])
+        if (map[x][y]==B)
         {
             score++;
         }
@@ -236,7 +236,8 @@ int main()
         char input;
         while (!_kbhit())
         {
-            try {
+            try 
+            {
                 PL.SetPlayerPosition(tempx, tempy);
             }
             catch (int)
