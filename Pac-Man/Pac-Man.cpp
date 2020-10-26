@@ -16,18 +16,20 @@ public:
     MAP()
     {
     }
-    void drawmap();
+    void drawmap(int score);
     int GetBeanNumber();
 };
 class Player : public MAP
 {
 private:
     int x, y;
+    int score;
 
 public:
     Player(int X = 18, int Y = 9);
-    int GetPX();
-    int GetPY();
+    int GetPX() const;
+    int GetPY() const;
+    int GetScore() const;
     void SetPlayerPosition(int X, int Y);
 };
 class Ghost : public MAP
@@ -66,14 +68,19 @@ Player::Player(int X, int Y) : MAP()
 {
     x = X;
     y = Y;
+    score = 0;
 }
-int Player::GetPX()
+int Player::GetPX() const
 {
     return x;
 }
-int Player::GetPY()
+int Player::GetPY() const
 {
     return y;
+}
+int Player::GetScore() const
+{
+    return score;
 }
 void Player::SetPlayerPosition(int X, int Y)
 {
@@ -102,6 +109,10 @@ void Player::SetPlayerPosition(int X, int Y)
         if (map[x][y] == G)
         {
             throw (int)0;
+        }
+        if (map[tempx][tempy])
+        {
+            score++;
         }
         map[tempx][tempy] = K;
         map[x][y] = P;
@@ -159,7 +170,7 @@ void Ghost::SetGhostPosition(int X, int Y)
         y = tempy;
     }
 }
-void MAP::drawmap()
+void MAP::drawmap(int score)
 {
     system("cls");
     for (int i = 0; i < 19; i++)
@@ -189,6 +200,7 @@ void MAP::drawmap()
         }
         cout << endl;
     }
+    cout << "Your score is: " << score << endl;
 }
 int MAP::GetBeanNumber()
 {
@@ -205,14 +217,18 @@ int MAP::GetBeanNumber()
     }
     return count;
 }
+void dead()
+{
+    cout << "You are dead. " << endl;
+}
 int main()
 {
-begin:
+    begin:
     MAP first;
     Player PL;
     Ghost GH0(17, 1);
     Ghost GH1(17, 17);
-    first.drawmap();
+    first.drawmap(0);
     int tempx = -1;
     int tempy = 0;
     while (first.GetBeanNumber() != 0)
@@ -225,9 +241,10 @@ begin:
             }
             catch (int)
             {
-                goto dead;
+                dead();
+                return 0;
             }
-            first.drawmap();
+            first.drawmap(PL.GetScore());
             Sleep(200);
         }
         input = _getch();
@@ -252,13 +269,5 @@ begin:
             tempy = 1;
         }
     }
-dead:
-    cout << "You are dead. Press enter to retry. " << endl;
-    char c = _getch();
-    if (c == '\n')
-    {
-        goto begin;
-    }
-    cout << "fuck";
     return 0;
 }
