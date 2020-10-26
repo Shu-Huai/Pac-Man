@@ -270,6 +270,8 @@ begin:
 					return 0;
 				}
 			}
+			GH0.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)), first);
+			GH1.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)), first);
 			first.DrawMap(PL.GetScore());
 			Sleep(200);
 		}
