@@ -10,40 +10,7 @@ using namespace std;
 class MAP
 {
 protected:
-    static int map[19][19];
-
-public:
-    MAP()
-    {
-    }
-    void drawmap(int score);
-    int GetBeanNumber();
-};
-class Player : public MAP
-{
-private:
-    int x, y;
-    int score;
-
-public:
-    Player(int X = 18, int Y = 9);
-    int GetPX() const;
-    int GetPY() const;
-    int GetScore() const;
-    void SetPlayerPosition(int X, int Y);
-};
-class Ghost : public MAP
-{
-private:
-    int x, y;
-
-public:
-    Ghost(int X = 1, int Y = 1);
-    int GetPX();
-    int GetPY();
-    void SetGhostPosition(int X, int Y);
-};
-int MAP::map[19][19] = {
+    int map[19][19] = {
     W, W, W, W, W, W, W, W, W, B, W, W, W, W, W, W, W, W, W,
     W, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, W,
     W, B, B, W, B, B, W, W, W, B, W, W, W, B, B, W, B, B, W,
@@ -63,11 +30,54 @@ int MAP::map[19][19] = {
     W, B, B, B, B, W, W, W, B, W, B, W, W, W, B, B, B, B, W,
     W, B, B, B, B, W, B, B, B, B, B, B, B, W, B, B, B, B, W,
     W, W, W, W, W, W, W, W, W, P, W, W, W, W, W, W, W, W, W,
+    };
+
+public:
+    MAP()
+    {
+    }
+    void DrawMap(int score);
+    void SetMap(int X,int Y,int condition);
+    int GetMap(int X, int Y);
+    int GetBeanNumber();
 };
-Player::Player(int X, int Y) : MAP()
+class Player
+{
+private:
+    int x, y;
+    int score;
+
+public:
+    Player(int X, int Y ,MAP &M);
+    int GetPX() const;
+    int GetPY() const;
+    int GetScore() const;
+    void SetPlayerPosition(int X, int Y, MAP& M);
+};
+class Ghost
+{
+private:
+    int x, y;
+
+public:
+    Ghost(int X, int Y,MAP &M);
+    int GetPX();
+    int GetPY();
+    void SetGhostPosition(int X, int Y,MAP &M);
+};
+void MAP::SetMap(int X, int Y, int condition)
+{
+    map[X][Y] = condition;
+}
+int MAP::GetMap(int X,int Y)
+{
+    return map[X][Y];
+}
+Player::Player(int X, int Y,MAP &M)
 {
     x = X;
     y = Y;
+    M.SetMap(X, Y, P);
     score = 0;
 }
 int Player::GetPX() const
@@ -82,7 +92,7 @@ int Player::GetScore() const
 {
     return score;
 }
-void Player::SetPlayerPosition(int X, int Y)
+void Player::SetPlayerPosition(int X, int Y, MAP& M)
 {
     int tempx = x;
     int tempy = y;
@@ -104,18 +114,18 @@ void Player::SetPlayerPosition(int X, int Y)
     {
         y += 19;
     }
-    if (map[x][y] != W)
+    if (M.GetMap(x,y) != W)
     {
-        if (map[x][y] == G)
+        if (M.GetMap(x, y) == G)
         {
             throw (int)0;
         }
-        if (map[x][y]==B)
+        if (M.GetMap(x, y) ==B)
         {
             score++;
         }
-        map[tempx][tempy] = K;
-        map[x][y] = P;
+        M.SetMap(tempx,tempy,K);
+        M.SetMap(x, y, P);
     }
     else
     {
@@ -123,11 +133,11 @@ void Player::SetPlayerPosition(int X, int Y)
         y = tempy;
     }
 }
-Ghost::Ghost(int X, int Y) : MAP()
+Ghost::Ghost(int X, int Y,MAP &M)
 {
     x = X;
     y = Y;
-    map[x][y] = G;
+    M.SetMap(X,Y,G);
 }
 int Ghost::GetPX()
 {
@@ -137,7 +147,7 @@ int Ghost::GetPY()
 {
     return y;
 }
-void Ghost::SetGhostPosition(int X, int Y)
+void Ghost::SetGhostPosition(int X, int Y,MAP &M)
 {
     int tempx = x;
     int tempy = y;
@@ -159,10 +169,10 @@ void Ghost::SetGhostPosition(int X, int Y)
     {
         y += 19;
     }
-    if (map[x][y] != W)
+    if (M.GetMap(x, y) != W)
     {
-        map[tempx][tempy] = B;
-        map[x][y] = G;
+        M.SetMap(tempx, tempy, B);
+        M.SetMap(x, y, G);
     }
     else
     {
@@ -170,7 +180,7 @@ void Ghost::SetGhostPosition(int X, int Y)
         y = tempy;
     }
 }
-void MAP::drawmap(int score)
+void MAP::DrawMap(int score)
 {
     system("cls");
     for (int i = 0; i < 19; i++)
@@ -217,18 +227,25 @@ int MAP::GetBeanNumber()
     }
     return count;
 }
-void dead()
+bool dead()
 {
-    cout << "You are dead. " << endl;
+    if (MessageBox(NULL, "You are dead. Press enter to retry. ", "You are dead. ", MB_OKCANCEL) == IDOK)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 int main()
 {
     begin:
     MAP first;
-    Player PL;
-    Ghost GH0(17, 1);
-    Ghost GH1(17, 17);
-    first.drawmap(0);
+    Player PL(18, 9, first);
+    Ghost GH0(17, 1,first);
+    Ghost GH1(17, 17,first);
+    first.DrawMap(0);
     int tempx = -1;
     int tempy = 0;
     while (first.GetBeanNumber() != 0)
@@ -238,14 +255,20 @@ int main()
         {
             try 
             {
-                PL.SetPlayerPosition(tempx, tempy);
+                PL.SetPlayerPosition(tempx, tempy,first);
             }
             catch (int)
             {
-                dead();
-                return 0;
+                if (dead())
+                {
+                    goto begin;
+                }
+                else
+                {
+                    return 0;
+                }
             }
-            first.drawmap(PL.GetScore());
+            first.DrawMap(PL.GetScore());
             Sleep(200);
         }
         input = _getch();
