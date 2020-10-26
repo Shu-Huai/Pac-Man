@@ -259,5 +259,6 @@ dead:
     {
         goto begin;
     }
+    cout << "fuck";
     return 0;
 }
