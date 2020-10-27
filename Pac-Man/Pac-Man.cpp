@@ -171,6 +171,10 @@ void Ghost::SetGhostPosition(int X, int Y, MAP& M)
 	}
 	if (M.GetMap(x, y) != W)
 	{
+		if (M.GetMap(x, y) == P)
+		{
+			throw (int)0;
+		}
 		M.SetMap(tempx, tempy, B);
 		M.SetMap(x, y, G);
 	}
@@ -240,8 +244,7 @@ bool dead()
 }
 int main()
 {
-	keybd_event(16, 0, 0, 0);
-	keybd_event(16, 0, KEYEVENTF_KEYUP, 0);
+	system("color F1");
 begin:
 	MAP first;
 	Player PL(18, 9, first);
@@ -270,9 +273,36 @@ begin:
 					return 0;
 				}
 			}
-			GH0.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)), first);
-			GH1.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)), first);
-			first.DrawMap(PL.GetScore());
+			try
+			{
+				GH0.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)), first);
+			}
+			catch (int)
+			{
+				if (dead())
+				{
+					goto begin;
+				}
+				else
+				{
+					return 0;
+				}
+			}
+			try
+			{
+				GH1.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)), first);
+			}
+			catch (int)
+			{
+				if (dead())
+				{
+					goto begin;
+				}
+				else
+				{
+					return 0;
+				}
+			}			first.DrawMap(PL.GetScore());
 			Sleep(200);
 		}
 		input = _getch();
