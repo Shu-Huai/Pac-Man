@@ -302,7 +302,8 @@ begin:
 				{
 					return 0;
 				}
-			}			first.DrawMap(PL.GetScore());
+			}
+			first.DrawMap(PL.GetScore());
 			Sleep(200);
 		}
 		input = _getch();
