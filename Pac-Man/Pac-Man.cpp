@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include <Windows.h>
-#include "conio.h"
+#include <conio.h>
 #define W 0
 #define B 1
 #define K 2
