@@ -327,5 +327,9 @@ begin:
 			tempy = 1;
 		}
 	}
+	if (MessageBox(NULL, "You are win. Press enter to restart. ", "You are win. ", MB_OKCANCEL) == IDOK)
+	{
+		goto begin;
+	}
 	return 0;
 }
