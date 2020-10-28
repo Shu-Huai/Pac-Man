@@ -64,6 +64,7 @@ public:
 	int GetPX();
 	int GetPY();
 	void SetGhostPosition(int X, int Y, MAP& M);
+	void Ghostmove(MAP& M);
 };
 void MAP::SetMap(int X, int Y, int condition)
 {
@@ -184,6 +185,80 @@ void Ghost::SetGhostPosition(int X, int Y, MAP& M)
 		y = tempy;
 	}
 }
+void Ghost::Ghostmove(MAP& M)
+{
+	int tempx = x, tempy = y, myrand = 0;
+	bool mov = 0;
+	int orimap;
+	while (mov == 0)
+	{
+		myrand = rand() % 4 + 1;
+		switch (myrand)
+		{
+		case 1:
+			if (M.GetMap(tempx + 1, tempy) != W && M.GetMap(tempx + 1, tempy) != G)
+			{
+				x = x + 1;
+				orimap = M.GetMap(x, y);
+				M.SetMap(tempx, tempy, orimap);
+				M.SetMap(x, y, G);
+				mov = 1;
+			}
+			else
+			{
+				x = tempx;
+				y = tempy;
+			}
+			break;
+		case 2:
+			if (M.GetMap(tempx - 1, tempy) != W && M.GetMap(tempx - 1, tempy) != G)
+			{
+				x = x - 1;
+				orimap = M.GetMap(x, y);
+				M.SetMap(tempx, tempy, orimap);
+				M.SetMap(x, y, G);
+				mov = 1;
+			}
+			else
+			{
+				x = tempx;
+				y = tempy;
+			}
+			break;
+		case 3:
+			if (M.GetMap(tempx, tempy + 1) != W && M.GetMap(tempx, tempy + 1) != G)
+			{
+				y = y + 1;
+				orimap = M.GetMap(x, y);
+				M.SetMap(tempx, tempy, orimap);
+				M.SetMap(x, y, G);
+				mov = 1;
+			}
+			else
+			{
+				x = tempx;
+				y = tempy;
+			}
+			break;
+		case 4:
+			if (M.GetMap(tempx, tempy - 1) != W && M.GetMap(tempx, tempy - 1) != G)
+			{
+				y = y - 1;
+				orimap = M.GetMap(x, y);
+				M.SetMap(tempx, tempy, orimap);
+				M.SetMap(x, y, G);
+				mov = 1;
+			}
+			else
+			{
+				x = tempx;
+				y = tempy;
+			}
+			break;
+		}
+	}
+	mov = 0;
+}
 void MAP::DrawMap(int score)
 {
 	system("cls");
@@ -250,8 +325,10 @@ begin:
 	Player PL(18, 9, first);
 	Ghost GH0(17, 1, first);
 	Ghost GH1(17, 17, first);
+	Ghost GH2(1, 17, first);
+	Ghost GH3(1, 1, first);
 	first.DrawMap(0);
-	int tempx = -1;
+	int tempx = 0;
 	int tempy = 0;
 	while (first.GetBeanNumber() != 0)
 	{
@@ -261,7 +338,12 @@ begin:
 			try
 			{
 				PL.SetPlayerPosition(tempx, tempy, first);
-			}
+				GH0.Ghostmove(first);
+				GH1.Ghostmove(first);
+				GH2.Ghostmove(first);
+				GH3.Ghostmove(first);
+			}//set ghost
+
 			catch (int)
 			{
 				if (dead())
@@ -276,7 +358,8 @@ begin:
 			try
 			{
 				GH0.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)), first);
-			}
+			}//meet G0
+
 			catch (int)
 			{
 				if (dead())
@@ -291,7 +374,40 @@ begin:
 			try
 			{
 				GH1.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)), first);
+			}//meet G1
+
+			catch (int)
+			{
+				if (dead())
+				{
+					goto begin;
+				}
+				else
+				{
+					return 0;
+				}
 			}
+			try
+			{
+				GH2.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)), first);
+			}//meet G2
+
+			catch (int)
+			{
+				if (dead())
+				{
+					goto begin;
+				}
+				else
+				{
+					return 0;
+				}
+			}
+			try
+			{
+				GH3.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)), first);
+			}//meet G3
+
 			catch (int)
 			{
 				if (dead())
@@ -304,7 +420,7 @@ begin:
 				}
 			}
 			first.DrawMap(PL.GetScore());
-			Sleep(200);
+			Sleep(500);
 		}
 		input = _getch();
 		if (input == 'w')
@@ -328,7 +444,7 @@ begin:
 			tempy = 1;
 		}
 	}
-	if (MessageBox(NULL, "You are win. Press enter to restart. ", "You are win. ", MB_OKCANCEL) == IDOK)
+	if (MessageBox(NULL, "You  win！ Press enter to restart. ", "You  win！", MB_OKCANCEL) == IDOK)
 	{
 		goto begin;
 	}
