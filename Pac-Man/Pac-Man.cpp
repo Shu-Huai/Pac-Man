@@ -63,7 +63,6 @@ public:
 	Ghost(int X, int Y, MAP& M);
 	int GetPX();
 	int GetPY();
-	void SetGhostPosition(int X, int Y, MAP& M);
 	void Ghostmove(MAP& M);
 };
 void MAP::SetMap(int X, int Y, int condition)
@@ -147,51 +146,6 @@ int Ghost::GetPX()
 int Ghost::GetPY()
 {
 	return y;
-}
-void Ghost::SetGhostPosition(int X, int Y, MAP& M)
-{
-	int tempx = x;
-	int tempy = y;
-	x += X;
-	y += Y;
-	if (x > 18)
-	{
-		x -= 19;
-	}
-	if (y > 18)
-	{
-		y -= 19;
-	}
-	if (x < 0)
-	{
-		x += 19;
-	}
-	if (y < 0)
-	{
-		y += 19;
-	}
-	if (M.GetMap(x, y) != W)//鬼的运动
-	{
-		if (M.GetMap(x, y) == P)//吃到玩家
-		{
-			throw (int)0;
-		}
-		if (M.GetMap(x, y) == K)//空格不能吐豆
-		{
-		M.SetMap(tempx, tempy, K);
-		M.SetMap(x, y, G);
-		}
-		if (M.GetMap(x, y) == B)
-		{
-			M.SetMap(tempx, tempy, B);
-			M.SetMap(x, y, G);
-		}
-	}
-	else
-	{
-		x = tempx;
-		y = tempy;
-	}
 }
 void Ghost::Ghostmove(MAP& M)
 {
@@ -352,81 +306,12 @@ begin:
 				GH2.Ghostmove(first);
 				GH3.Ghostmove(first);
 			}
-
 			/*死亡判断 四个鬼*/
 			catch (int)
 			{
 				if (dead())
 				{
-					Sleep(500);
-					goto begin;
-				}
-				else
-				{
-					return 0;
-				}
-			}
-			try
-			{
-				GH0.SetGhostPosition(1 - rand() % (2 + 1), 1 - rand() % (2 + 1), first);
-			}
-
-			catch (int)
-			{
-				if (dead())
-				{
-					Sleep(500);
-					goto begin;
-				}
-				else
-				{
-					return 0;
-				}
-			}
-			try
-			{
-				GH1.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)), first);
-			}
-
-			catch (int)
-			{
-				if (dead())
-				{
-					Sleep(500);
-					goto begin;
-				}
-				else
-				{
-					return 0;
-				}
-			}
-			try
-			{
-				GH2.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)), first);
-			}//meet G2
-
-			catch (int)
-			{
-				if (dead())
-				{
-					Sleep(500);
-					goto begin;
-				}
-				else
-				{
-					return 0;
-				}
-			}
-			try
-			{
-				GH3.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)), first);
-			}//meet G3
-
-			catch (int)
-			{
-				if (dead())
-				{
-					Sleep(500);
+					Sleep(100);
 					goto begin;
 				}
 				else
@@ -435,7 +320,7 @@ begin:
 				}
 			}
 			first.DrawMap(PL.GetScore());
-			Sleep(1000);
+			Sleep(500);
 		}
 		
 		/*移动控制*/
