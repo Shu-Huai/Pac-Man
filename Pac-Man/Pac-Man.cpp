@@ -181,6 +181,22 @@ void Ghost::Ghostmove(MAP& M)
 			FinalY = OriY - 1;
 			break;
 		}
+		if (FinalX > 18)
+		{
+			FinalX -= 19;
+		}
+		if (FinalY > 18)
+		{
+			FinalY -= 19;
+		}
+		if (FinalX < 0)
+		{
+			FinalX += 19;
+		}
+		if (FinalY < 0)
+		{
+			FinalY += 19;
+		}
 		if (M.map[FinalX][FinalY] != W && M.map[FinalX][FinalY] != G)
 		{
 			M.map[x][y] = O;
