@@ -30,7 +30,7 @@ protected:
 		W, B, W, W, B, B, B, B, B, B, B, B, B, B, B, W, W, B, W,
 		W, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, W,
 		W, B, B, B, B, W, W, W, B, W, B, W, W, W, B, B, B, B, W,
-		W, B, B, B, B, W, B, B, B, B, B, B, B, W, B, B, B, B, W,
+		W, B, B, B, B, B, B, B, B, B, B, B, B, W, B, B, B, B, W,
 		W, W, W, W, W, W, W, W, W, P, W, W, W, W, W, W, W, W, W,
 	};
 
@@ -151,7 +151,11 @@ int Ghost::GetPY()
 }
 void Ghost::Ghostmove(MAP& M)
 {
-	int tempx = x, tempy = y, myrand = 0;
+	int OriX = x;
+	int OriY = y;
+	int FinalX = 0;
+	int FinalY = 0;
+	int myrand = 0;
 	bool mov = 0;
 	int orimap;
 	while (mov == 0)
@@ -160,65 +164,39 @@ void Ghost::Ghostmove(MAP& M)
 		switch (myrand)
 		{
 		case 1:
-			if (M.map[tempx + 1][tempy] != W && M.map[tempx + 1][tempy] != G)
-			{
-				x = x + 1;
-				orimap = M.map[x][y];
-				M.SetMap(tempx, tempy, orimap);
-				M.SetMap(x, y, G);
-				mov = 1;
-			}
-			else
-			{
-				x = tempx;
-				y = tempy;
-			}
+			FinalX = OriX + 1;
+			FinalY = OriY;
 			break;
 		case 2:
-			if (M.map[tempx - 1][tempy] != W && M.map[tempx - 1][tempy] != G)
-			{
-				x = x - 1;
-				orimap = M.map[x][y];
-				M.SetMap(tempx, tempy, orimap);
-				M.SetMap(x, y, G);
-				mov = 1;
-			}
-			else
-			{
-				x = tempx;
-				y = tempy;
-			}
+			FinalX = OriX - 1;
+			FinalY = OriY;
 			break;
 		case 3:
-			if (M.map[tempx][tempy + 1] != W && M.map[tempx][tempy + 1] != G)
-			{
-				y = y + 1;
-				orimap = M.map[x][y];
-				M.SetMap(tempx, tempy, orimap);
-				M.SetMap(x, y, G);
-				mov = 1;
-			}
-			else
-			{
-				x = tempx;
-				y = tempy;
-			}
+			FinalX = OriX;
+			FinalY = OriY + 1;
 			break;
 		case 4:
-			if (M.map[tempx][tempy - 1] != W && M.map[tempx][tempy - 1] != G)
-			{
-				y = y - 1;
-				orimap = M.map[x][y];
-				M.SetMap(tempx, tempy, orimap);
-				M.SetMap(x, y, G);
-				mov = 1;
-			}
-			else
-			{
-				x = tempx;
-				y = tempy;
-			}
+			FinalX = OriX;
+			FinalY = OriY - 1;
 			break;
+		}
+		if (M.map[FinalX][FinalY] != W && M.map[FinalX][FinalY] != G)
+		{
+			x = FinalX;
+			y = FinalY;
+			orimap = M.map[FinalX][FinalY];
+			if (orimap == P)
+			{
+				throw int(0);
+			}
+			M.SetMap(OriX, OriY, orimap);
+			M.SetMap(x, y, G);
+			mov = 1;
+		}
+		else
+		{
+			x = OriX;
+			y = OriY;
 		}
 	}
 	mov = 0;
