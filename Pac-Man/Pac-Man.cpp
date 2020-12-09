@@ -30,7 +30,7 @@ protected:
 		W, B, W, W, B, B, B, B, B, B, B, B, B, B, B, W, W, B, W,
 		W, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, W,
 		W, B, B, B, B, W, W, W, B, W, B, W, W, W, B, B, B, B, W,
-		W, B, B, B, B, B, B, B, B, B, B, B, B, W, B, B, B, B, W,
+		W, B, B, B, B, W, B, B, B, B, B, B, B, W, B, B, B, B, W,
 		W, W, W, W, W, W, W, W, W, P, W, W, W, W, W, W, W, W, W,
 	};
 
@@ -60,6 +60,7 @@ class Ghost
 {
 private:
 	int x, y;
+	int O;
 
 public:
 	Ghost(int X, int Y, MAP& M);
@@ -140,6 +141,7 @@ Ghost::Ghost(int X, int Y, MAP& M)
 	x = X;
 	y = Y;
 	M.SetMap(X, Y, G);
+	O = 1;
 }
 int Ghost::GetPX()
 {
@@ -157,7 +159,6 @@ void Ghost::Ghostmove(MAP& M)
 	int FinalY = 0;
 	int myrand = 0;
 	bool mov = 0;
-	int orimap;
 	while (mov == 0)
 	{
 		myrand = rand() % 4 + 1;
@@ -182,14 +183,16 @@ void Ghost::Ghostmove(MAP& M)
 		}
 		if (M.map[FinalX][FinalY] != W && M.map[FinalX][FinalY] != G)
 		{
+			M.map[x][y] = O;
 			x = FinalX;
 			y = FinalY;
-			orimap = M.map[FinalX][FinalY];
-			if (orimap == P)
+			O = M.map[FinalX][FinalY];
+
+			if (O == P)
 			{
 				throw int(0);
 			}
-			M.SetMap(OriX, OriY, orimap);
+
 			M.SetMap(x, y, G);
 			mov = 1;
 		}
@@ -284,7 +287,7 @@ begin:
 				GH1.Ghostmove(first);
 				GH2.Ghostmove(first);
 				GH3.Ghostmove(first);
-			}//set ghost
+			}
 			catch (int)
 			{
 				if (dead())
