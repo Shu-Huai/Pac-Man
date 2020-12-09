@@ -63,6 +63,7 @@ public:
 	Ghost(int X, int Y, MAP& M);
 	int GetPX();
 	int GetPY();
+	void SetGhostPosition(int X, int Y, MAP& M);
 	void Ghostmove(MAP& M);
 };
 void MAP::SetMap(int X, int Y, int condition)
@@ -147,6 +148,43 @@ int Ghost::GetPY()
 {
 	return y;
 }
+void Ghost::SetGhostPosition(int X, int Y, MAP& M)
+{
+	int tempx = x;
+	int tempy = y;
+	x += X;
+	y += Y;
+	if (x > 18)
+	{
+		x -= 19;
+	}
+	if (y > 18)
+	{
+		y -= 19;
+	}
+	if (x < 0)
+	{
+		x += 19;
+	}
+	if (y < 0)
+	{
+		y += 19;
+	}
+	if (M.GetMap(x, y) != W)
+	{
+		if (M.GetMap(x, y) == P)
+		{
+			throw (int)0;
+		}
+		M.SetMap(tempx, tempy, B);
+		M.SetMap(x, y, G);
+	}
+	else
+	{
+		x = tempx;
+		y = tempy;
+	}
+}
 void Ghost::Ghostmove(MAP& M)
 {
 	int tempx = x, tempy = y, myrand = 0;
@@ -154,7 +192,7 @@ void Ghost::Ghostmove(MAP& M)
 	int orimap;
 	while (mov == 0)
 	{
-		myrand = rand() % 4 +1;
+		myrand = rand() % 4 + 1;
 		switch (myrand)
 		{
 		case 1:
@@ -297,7 +335,6 @@ begin:
 		char input;
 		while (!_kbhit())
 		{
-			/*初始化位置*/
 			try
 			{
 				PL.SetPlayerPosition(tempx, tempy, first);
@@ -305,13 +342,76 @@ begin:
 				GH1.Ghostmove(first);
 				GH2.Ghostmove(first);
 				GH3.Ghostmove(first);
-			}
-			/*死亡判断 四个鬼*/
+			}//set ghost
+
 			catch (int)
 			{
 				if (dead())
 				{
-					Sleep(100);
+					goto begin;
+				}
+				else
+				{
+					return 0;
+				}
+			}
+			try
+			{
+				GH0.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)), first);
+			}//meet G0
+
+			catch (int)
+			{
+				if (dead())
+				{
+					goto begin;
+				}
+				else
+				{
+					return 0;
+				}
+			}
+			try
+			{
+				GH1.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)), first);
+			}//meet G1
+
+			catch (int)
+			{
+				if (dead())
+				{
+					goto begin;
+				}
+				else
+				{
+					return 0;
+				}
+			}
+			try
+			{
+				GH2.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)), first);
+			}//meet G2
+
+			catch (int)
+			{
+				if (dead())
+				{
+					goto begin;
+				}
+				else
+				{
+					return 0;
+				}
+			}
+			try
+			{
+				GH3.SetGhostPosition(1 - (rand() % (2 + 1)), 1 - (rand() % (2 + 1)), first);
+			}//meet G3
+
+			catch (int)
+			{
+				if (dead())
+				{
 					goto begin;
 				}
 				else
@@ -322,8 +422,6 @@ begin:
 			first.DrawMap(PL.GetScore());
 			Sleep(500);
 		}
-		
-		/*移动控制*/
 		input = _getch();
 		if (input == 'w')
 		{
@@ -346,7 +444,6 @@ begin:
 			tempy = 1;
 		}
 	}
-	//胜利判断
 	if (MessageBox(NULL, "You  win！ Press enter to restart. ", "You  win！", MB_OKCANCEL) == IDOK)
 	{
 		goto begin;
