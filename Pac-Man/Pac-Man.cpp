@@ -65,7 +65,6 @@ public:
 	Ghost(int X, int Y, MAP& M);
 	int GetPX();
 	int GetPY();
-	void SetGhostPosition(int X, int Y, MAP& M);
 	void Ghostmove(MAP& M);
 };
 void MAP::SetMap(int X, int Y, int condition)
@@ -149,43 +148,6 @@ int Ghost::GetPX()
 int Ghost::GetPY()
 {
 	return y;
-}
-void Ghost::SetGhostPosition(int X, int Y, MAP& M)
-{
-	int tempx = x;
-	int tempy = y;
-	x += X;
-	y += Y;
-	if (x > 18)
-	{
-		x -= 19;
-	}
-	if (y > 18)
-	{
-		y -= 19;
-	}
-	if (x < 0)
-	{
-		x += 19;
-	}
-	if (y < 0)
-	{
-		y += 19;
-	}
-	if (M.map[x][y] != W)
-	{
-		if (M.map[x][y] == P)
-		{
-			throw (int)0;
-		}
-		M.SetMap(tempx, tempy, B);
-		M.SetMap(x, y, G);
-	}
-	else
-	{
-		x = tempx;
-		y = tempy;
-	}
 }
 void Ghost::Ghostmove(MAP& M)
 {
