@@ -9,6 +9,8 @@
 using namespace std;
 class MAP
 {
+	friend class Player;
+	friend class Ghost;
 protected:
 	int map[19][19] = {
 		W, W, W, W, W, W, W, W, W, B, W, W, W, W, W, W, W, W, W,
@@ -115,13 +117,13 @@ void Player::SetPlayerPosition(int X, int Y, MAP& M)
 	{
 		y += 19;
 	}
-	if (M.GetMap(x, y) != W)
+	if (M.map[x][y] != W)
 	{
-		if (M.GetMap(x, y) == G)
+		if (M.map[x][y] == G)
 		{
 			throw (int)0;
 		}
-		if (M.GetMap(x, y) == B)
+		if (M.map[x][y] == B)
 		{
 			score++;
 		}
@@ -170,9 +172,9 @@ void Ghost::SetGhostPosition(int X, int Y, MAP& M)
 	{
 		y += 19;
 	}
-	if (M.GetMap(x, y) != W)
+	if (M.map[x][y] != W)
 	{
-		if (M.GetMap(x, y) == P)
+		if (M.map[x][y] == P)
 		{
 			throw (int)0;
 		}
@@ -196,10 +198,10 @@ void Ghost::Ghostmove(MAP& M)
 		switch (myrand)
 		{
 		case 1:
-			if (M.GetMap(tempx + 1, tempy) != W && M.GetMap(tempx + 1, tempy) != G)
+			if (M.map[tempx + 1][tempy] != W && M.map[tempx + 1][tempy] != G)
 			{
 				x = x + 1;
-				orimap = M.GetMap(x, y);
+				orimap = M.map[x][y];
 				M.SetMap(tempx, tempy, orimap);
 				M.SetMap(x, y, G);
 				mov = 1;
@@ -211,10 +213,10 @@ void Ghost::Ghostmove(MAP& M)
 			}
 			break;
 		case 2:
-			if (M.GetMap(tempx - 1, tempy) != W && M.GetMap(tempx - 1, tempy) != G)
+			if (M.map[tempx - 1][tempy] != W && M.map[tempx - 1][tempy] != G)
 			{
 				x = x - 1;
-				orimap = M.GetMap(x, y);
+				orimap = M.map[x][y];
 				M.SetMap(tempx, tempy, orimap);
 				M.SetMap(x, y, G);
 				mov = 1;
@@ -226,10 +228,10 @@ void Ghost::Ghostmove(MAP& M)
 			}
 			break;
 		case 3:
-			if (M.GetMap(tempx, tempy + 1) != W && M.GetMap(tempx, tempy + 1) != G)
+			if (M.map[tempx][tempy + 1] != W && M.map[tempx][tempy + 1] != G)
 			{
 				y = y + 1;
-				orimap = M.GetMap(x, y);
+				orimap = M.map[x][y];
 				M.SetMap(tempx, tempy, orimap);
 				M.SetMap(x, y, G);
 				mov = 1;
@@ -241,10 +243,10 @@ void Ghost::Ghostmove(MAP& M)
 			}
 			break;
 		case 4:
-			if (M.GetMap(tempx, tempy - 1) != W && M.GetMap(tempx, tempy - 1) != G)
+			if (M.map[tempx][tempy - 1] != W && M.map[tempx][tempy - 1] != G)
 			{
 				y = y - 1;
-				orimap = M.GetMap(x, y);
+				orimap = M.map[x][y];
 				M.SetMap(tempx, tempy, orimap);
 				M.SetMap(x, y, G);
 				mov = 1;
