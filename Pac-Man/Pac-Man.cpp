@@ -39,8 +39,6 @@ public:
 	{
 	}
 	void DrawMap(int score);
-	void SetMap(int X, int Y, int condition);
-	int GetMap(int X, int Y);
 	int GetBeanNumber();
 };
 class Player
@@ -68,19 +66,11 @@ public:
 	int GetPY();
 	void Ghostmove(MAP& M);
 };
-void MAP::SetMap(int X, int Y, int condition)
-{
-	map[X][Y] = condition;
-}
-int MAP::GetMap(int X, int Y)
-{
-	return map[X][Y];
-}
 Player::Player(int X, int Y, MAP& M)
 {
 	x = X;
 	y = Y;
-	M.SetMap(X, Y, P);
+	M.map[X][Y] = P;
 	score = 0;
 }
 int Player::GetPX() const
@@ -121,14 +111,15 @@ void Player::SetPlayerPosition(int X, int Y, MAP& M)
 	{
 		if (M.map[x][y] == G)
 		{
+			M.map[tempx][tempy]= K;
 			throw (int)0;
 		}
 		if (M.map[x][y] == B)
 		{
 			score++;
 		}
-		M.SetMap(tempx, tempy, K);
-		M.SetMap(x, y, P);
+		M.map[tempx][tempy] = K;
+		M.map[x][y] = P;
 	}
 	else
 	{
@@ -140,7 +131,7 @@ Ghost::Ghost(int X, int Y, MAP& M)
 {
 	x = X;
 	y = Y;
-	M.SetMap(X, Y, G);
+	M.map[X][Y] = G;
 	O = 1;
 }
 int Ghost::GetPX()
@@ -203,13 +194,11 @@ void Ghost::Ghostmove(MAP& M)
 			x = FinalX;
 			y = FinalY;
 			O = M.map[FinalX][FinalY];
-
+			M.map[x][y] = G;
 			if (O == P)
 			{
 				throw int(0);
 			}
-
-			M.SetMap(x, y, G);
 			mov = 1;
 		}
 		else
@@ -229,11 +218,11 @@ void MAP::DrawMap(int score)
 		{
 			if (map[i][j] == 0)
 			{
-				cout << "□";
+				cout << "■";
 			}
 			else if (map[i][j] == 1)
 			{
-				cout << "·";
+				cout << "。";
 			}
 			else if (map[i][j] == 2)
 			{
@@ -306,6 +295,7 @@ begin:
 			}
 			catch (int)
 			{
+				first.DrawMap(PL.GetScore());
 				if (dead())
 				{
 					goto begin;
