@@ -154,7 +154,7 @@ void Ghost::Ghostmove(MAP& M)
 	int orimap;
 	while (mov == 0)
 	{
-		myrand = rand() % 4 +1;
+		myrand = rand() % 4 + 1;
 		switch (myrand)
 		{
 		case 1:
@@ -322,7 +322,7 @@ begin:
 			first.DrawMap(PL.GetScore());
 			Sleep(500);
 		}
-		
+
 		/*移动控制*/
 		input = _getch();
 		if (input == 'w')
