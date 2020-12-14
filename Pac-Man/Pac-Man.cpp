@@ -1,261 +1,11 @@
 ﻿#include <iostream>
 #include <Windows.h>
 #include <conio.h>
-#define W 0
-#define B 1
-#define K 2
-#define P 3
-#define G 4
+#include "File.h"
+#include "Ghost.h"
+#include "Map.h"
+#include "Player.h"
 using namespace std;
-class MAP
-{
-	friend class Player;
-	friend class Ghost;
-protected:
-	int map[19][19] = {
-		W, W, W, W, W, W, W, W, W, B, W, W, W, W, W, W, W, W, W,
-		W, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, W,
-		W, B, B, W, B, B, W, W, W, B, W, W, W, B, B, W, B, B, W,
-		W, B, W, W, B, B, B, B, B, B, B, B, B, B, B, W, W, B, W,
-		W, B, W, B, B, B, W, W, W, B, W, W, W, B, B, B, W, B, W,
-		W, B, W, B, B, B, B, B, B, B, B, B, B, B, B, B, W, B, W,
-		W, B, B, B, B, B, W, W, B, B, B, W, W, B, B, B, B, B, W,
-		W, B, W, B, B, B, B, B, B, B, B, B, B, B, B, B, W, B, W,
-		W, B, W, B, B, B, B, B, W, B, W, B, B, B, B, B, W, B, W,
-		B, B, B, B, B, B, B, B, W, W, W, B, B, B, B, B, B, B, B,
-		W, B, W, B, B, B, B, B, B, B, B, B, B, B, B, B, W, B, W,
-		W, B, W, B, B, W, B, B, B, B, B, B, B, W, B, B, W, B, W,
-		W, B, W, B, W, W, W, B, B, B, B, B, W, W, W, B, W, B, W,
-		W, B, B, B, B, W, B, B, B, B, B, B, B, W, B, B, B, B, W,
-		W, B, W, W, B, B, B, B, B, B, B, B, B, B, B, W, W, B, W,
-		W, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, W,
-		W, B, B, B, B, W, W, W, B, W, B, W, W, W, B, B, B, B, W,
-		W, B, B, B, B, W, B, B, B, B, B, B, B, W, B, B, B, B, W,
-		W, W, W, W, W, W, W, W, W, P, W, W, W, W, W, W, W, W, W,
-	};
-
-public:
-	MAP()
-	{
-	}
-	void DrawMap(int score);
-	int GetBeanNumber();
-};
-class Player
-{
-private:
-	int x, y;
-	int score;
-
-public:
-	Player(int X, int Y, MAP& M);
-	int GetPX() const;
-	int GetPY() const;
-	int GetScore() const;
-	void SetPlayerPosition(int X, int Y, MAP& M);
-};
-class Ghost
-{
-private:
-	int x, y;
-	int O;
-
-public:
-	Ghost(int X, int Y, MAP& M);
-	int GetPX();
-	int GetPY();
-	void Ghostmove(MAP& M);
-};
-Player::Player(int X, int Y, MAP& M)
-{
-	x = X;
-	y = Y;
-	M.map[X][Y] = P;
-	score = 0;
-}
-int Player::GetPX() const
-{
-	return x;
-}
-int Player::GetPY() const
-{
-	return y;
-}
-int Player::GetScore() const
-{
-	return score;
-}
-void Player::SetPlayerPosition(int X, int Y, MAP& M)
-{
-	int tempx = x;
-	int tempy = y;
-	x += X;
-	y += Y;
-	if (x > 18)
-	{
-		x -= 19;
-	}
-	if (y > 18)
-	{
-		y -= 19;
-	}
-	if (x < 0)
-	{
-		x += 19;
-	}
-	if (y < 0)
-	{
-		y += 19;
-	}
-	if (M.map[x][y] != W)
-	{
-		if (M.map[x][y] == G)
-		{
-			M.map[tempx][tempy]= K;
-			throw (int)0;
-		}
-		if (M.map[x][y] == B)
-		{
-			score++;
-		}
-		M.map[tempx][tempy] = K;
-		M.map[x][y] = P;
-	}
-	else
-	{
-		x = tempx;
-		y = tempy;
-	}
-}
-Ghost::Ghost(int X, int Y, MAP& M)
-{
-	x = X;
-	y = Y;
-	M.map[X][Y] = G;
-	O = 1;
-}
-int Ghost::GetPX()
-{
-	return x;
-}
-int Ghost::GetPY()
-{
-	return y;
-}
-void Ghost::Ghostmove(MAP& M)
-{
-	int OriX = x;
-	int OriY = y;
-	int FinalX = 0;
-	int FinalY = 0;
-	int myrand = 0;
-	bool mov = 0;
-	while (mov == 0)
-	{
-		myrand = rand() % 4 + 1;
-		switch (myrand)
-		{
-		case 1:
-			FinalX = OriX + 1;
-			FinalY = OriY;
-			break;
-		case 2:
-			FinalX = OriX - 1;
-			FinalY = OriY;
-			break;
-		case 3:
-			FinalX = OriX;
-			FinalY = OriY + 1;
-			break;
-		case 4:
-			FinalX = OriX;
-			FinalY = OriY - 1;
-			break;
-		}
-		if (FinalX > 18)
-		{
-			FinalX -= 19;
-		}
-		if (FinalY > 18)
-		{
-			FinalY -= 19;
-		}
-		if (FinalX < 0)
-		{
-			FinalX += 19;
-		}
-		if (FinalY < 0)
-		{
-			FinalY += 19;
-		}
-		if (M.map[FinalX][FinalY] != W && M.map[FinalX][FinalY] != G)
-		{
-			M.map[x][y] = O;
-			x = FinalX;
-			y = FinalY;
-			O = M.map[FinalX][FinalY];
-			M.map[x][y] = G;
-			if (O == P)
-			{
-				throw int(0);
-			}
-			mov = 1;
-		}
-		else
-		{
-			x = OriX;
-			y = OriY;
-		}
-	}
-	mov = 0;
-}
-void MAP::DrawMap(int score)
-{
-	system("cls");
-	for (int i = 0; i < 19; i++)
-	{
-		for (int j = 0; j < 19; j++)
-		{
-			if (map[i][j] == 0)
-			{
-				cout << "■";
-			}
-			else if (map[i][j] == 1)
-			{
-				cout << "。";
-			}
-			else if (map[i][j] == 2)
-			{
-				cout << "  ";
-			}
-			else if (map[i][j] == 3)
-			{
-				cout << "★";
-			}
-			else if (map[i][j] == 4)
-			{
-				cout << "囧";
-			}
-		}
-		cout << endl;
-	}
-	cout << "Your score is: " << score << endl;
-}
-int MAP::GetBeanNumber()
-{
-	int count = 0;
-	for (int i = 0; i < 19; i++)
-	{
-		for (int j = 0; j < 19; j++)
-		{
-			if (map[i][j] == B)
-			{
-				count++;
-			}
-		}
-	}
-	return count;
-}
 bool dead()
 {
 	if (MessageBox(NULL, "You are dead. Press enter to retry. ", "You are dead. ", MB_OKCANCEL) == IDOK)
@@ -271,7 +21,7 @@ int main()
 {
 	system("color F1");
 begin:
-	MAP first;
+	Map first;
 	Player PL(18, 9, first);
 	Ghost GH0(17, 1, first);
 	Ghost GH1(17, 17, first);
@@ -328,6 +78,11 @@ begin:
 		{
 			tempx = 0;
 			tempy = 1;
+		}
+		else if (input == 27)
+		{
+			Write(first);
+			system("pause");
 		}
 	}
 	if (MessageBox(NULL, "You  win！ Press enter to restart. ", "You  win！", MB_OKCANCEL) == IDOK)
