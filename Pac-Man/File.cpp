@@ -3,7 +3,7 @@
 using namespace std;
 void  Write(Map& Map)
 {
-	fstream MapData("MapData.dat", ios::out | ios::binary);  // 此处省略文件是否打开失败的判断
+	fstream MapData("MapData.dat", ios::out | ios::binary | ios::trunc);  // 此处省略文件是否打开失败的判断
 	MapData.write((char*)&Map, sizeof(Map)); // 二进制写入的方式
 	MapData.close();
 }
