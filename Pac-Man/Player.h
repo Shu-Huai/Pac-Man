@@ -7,6 +7,7 @@ private:
 	int score;
 
 public:
+	Player();
 	Player(int X, int Y, Map& M);
 	int GetPX() const;
 	int GetPY() const;

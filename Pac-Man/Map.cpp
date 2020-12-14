@@ -48,3 +48,7 @@ int Map::GetBeanNumber()
 	}
 	return count;
 }
+void Map::SetMap(int X, int Y, int condition)
+{
+	map[X][Y] = condition;
+}

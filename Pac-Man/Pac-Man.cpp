@@ -22,11 +22,39 @@ int main()
 	system("color F1");
 begin:
 	Map first;
-	Player PL(18, 9, first);
-	Ghost GH0(17, 1, first);
-	Ghost GH1(17, 17, first);
-	Ghost GH2(1, 17, first);
-	Ghost GH3(1, 1, first);
+	Player PL;
+	Ghost GH0;
+	Ghost GH1;
+	Ghost GH2;
+	Ghost GH3;
+	cout << "               Pac Man                " << endl
+		<< endl
+		<< "--------------------------------------" << endl
+		<< endl
+		<< "        1. Begin a new game." << endl
+		<< endl
+		<< "        2. Resume." << endl
+		<< endl
+		<< "        3. Exit." << endl
+		<< endl;
+	char Select = 0;
+	Select = _getch();
+	switch (Select)
+	{
+	case '1':
+		PL = Player(18, 9, first);
+		GH0 = Ghost(17, 1, first);
+		GH1 = Ghost(17, 17, first);
+		GH2 = Ghost(1, 17, first);
+		GH3 = Ghost(1, 1, first);
+		break;
+	case '2':
+		Read(first);
+		break;
+	case '3':
+		return 0;
+		break;
+	}
 	first.DrawMap(0);
 	int tempx = 0;
 	int tempy = 0;

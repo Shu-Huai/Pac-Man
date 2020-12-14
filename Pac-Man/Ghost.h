@@ -7,6 +7,7 @@ private:
 	int O;
 
 public:
+	Ghost();
 	Ghost(int X, int Y, Map& M);
 	int GetPX();
 	int GetPY();

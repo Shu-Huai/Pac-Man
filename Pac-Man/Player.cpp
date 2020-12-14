@@ -1,6 +1,12 @@
 #include <iostream>
 #include "Player.h"
 using namespace std;
+Player::Player()
+{
+	x = 0;
+	y = 0;
+	score = 0;
+}
 Player::Player(int X, int Y, Map& M)
 {
 	x = X;

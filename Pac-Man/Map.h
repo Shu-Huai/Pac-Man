@@ -37,4 +37,5 @@ public:
 	}
 	void DrawMap(int score);
 	int GetBeanNumber();
+	void SetMap(int X, int Y, int condition);
 };

@@ -1,6 +1,12 @@
 #include <iostream>
 #include "Ghost.h"
 using namespace std;
+Ghost::Ghost()
+{
+	x = 0;
+	y = 0;
+	O = 0;
+}
 Ghost::Ghost(int X, int Y, Map& M)
 {
 	x = X;
