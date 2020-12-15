@@ -22,8 +22,8 @@ int main()
 	system("color F1");
 	int Gnum = 4;//鬼数量
 
-		int gx ;//集中于gx、gy周围
-		int gy ;
+	int gx;//集中于gx、gy周围
+	int gy;
 
 begin:
 	Map first;
@@ -51,19 +51,9 @@ begin:
 		{
 			GH[g] = Ghost(gx++, gy++, first);
 		}
-		/*GH[0] = Ghost(17, 1, first);
-		GH[1] = Ghost(17, 17, first);
-		GH[2] = Ghost(1, 17, first);
-		GH[3] = Ghost(1, 1, first);*/
 		break;
 	case '2':
-		system("cls");
-		for (int i = 0; i < 4; i++)
-		{
-			cout << GH[i].GetPX() << endl;
-		}
-		system("pause");
-		Read(first,PL,GH);
+		Read(first, PL, GH);
 		break;
 	case '3':
 		return 0;
@@ -84,10 +74,6 @@ begin:
 				{
 					GH[g].Ghostmove(first);
 				}
-				/*GH[0].Ghostmove(first);
-				GH[1].Ghostmove(first);
-				GH[2].Ghostmove(first);
-				GH[3].Ghostmove(first);*/
 			}
 			catch (int)
 			{
@@ -127,7 +113,7 @@ begin:
 		}
 		else if (input == 27)
 		{
-			Write(first,PL,GH);
+			Write(first, PL, GH);
 			system("pause");
 		}
 	}

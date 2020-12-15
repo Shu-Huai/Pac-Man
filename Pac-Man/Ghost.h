@@ -12,4 +12,5 @@ public:
 	int GetPX();
 	int GetPY();
 	void Ghostmove(Map& M);
+	void Ghoststop(Map& M);
 };

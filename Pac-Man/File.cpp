@@ -1,25 +1,36 @@
 #include <fstream>
-#include<iostream>
 #include "File.h"
 using namespace std;
-void  Write(Map& Map, Player& PL, Ghost* &Gh)
+void  Write(Map& MAP, Player& PL, Ghost*& GH)
 {
-	fstream MapData("MapData.dat", ios::out | ios::trunc);  // 此处省略文件是否打开失败的判断
-	MapData.write((char*)&Map, sizeof(Map)); // 二进制写入的方式
-	MapData.write((char*)&PL, sizeof(PL)); 
-	MapData.write((char*)&Gh, sizeof(Gh));
-	MapData.close();
-}
-void Read(Map& Map, Player& PL, Ghost*& Gh)
-{
-	ifstream MapData("MapData.dat", ios::in );
+	fstream MapData("MapData.dat", ios::out | ios::binary | ios::trunc);
 	if (!MapData)
 	{
 		return;
 	}
-	int n = 0;
-	int TempMap[19 * 19] = { 0 };
-	MapData.read((char*)&Map, sizeof(Map));
-	MapData.read((char*)&PL, sizeof(PL));
-	MapData.read((char*)&Gh, sizeof(Gh));
+	MapData.write((char*)&MAP, sizeof(Map));
+	MapData.write((char*)&PL, sizeof(Player));
+	for (int i = 0; i < 4; i++)
+	{
+		Ghost temp = GH[i];
+		MapData.write((char*)&temp, sizeof(Ghost));
+	}
+	MapData.close();
+}
+void Read(Map& MAP, Player& PL, Ghost*& GH)
+{
+	ifstream MapData("MapData.dat", ios::in | ios::binary);
+	if (!MapData)
+	{
+		return;
+	}
+	MapData.read((char*)&MAP, sizeof(Map));
+	MapData.read((char*)&PL, sizeof(Player));
+	for (int i = 0; i < 4; i++)
+	{
+		Ghost temp;
+		MapData.read((char*)&temp, sizeof(Ghost));
+		GH[i] = temp;
+	}
+	MapData.close();
 }
