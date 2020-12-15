@@ -57,7 +57,13 @@ begin:
 		GH[3] = Ghost(1, 1, first);*/
 		break;
 	case '2':
-		Read(first,PL);
+		system("cls");
+		for (int i = 0; i < 4; i++)
+		{
+			cout << GH[i].GetPX() << endl;
+		}
+		system("pause");
+		Read(first,PL,GH);
 		break;
 	case '3':
 		return 0;
@@ -121,7 +127,7 @@ begin:
 		}
 		else if (input == 27)
 		{
-			Write(first,PL);
+			Write(first,PL,GH);
 			system("pause");
 		}
 	}
