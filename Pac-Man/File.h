@@ -1,4 +1,6 @@
 #pragma once
 #include "Map.h"
-void Write(Map& map);
-void Read(Map& Map);
+#include"Ghost.h"
+#include"Player.h"
+void Write(Map& Map, Player& PL);
+void Read(Map& Map, Player& PL);
