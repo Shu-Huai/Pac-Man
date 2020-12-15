@@ -89,3 +89,4 @@ void Ghost::Ghostmove(Map& M)
 	}
 	mov = 0;
 }
+

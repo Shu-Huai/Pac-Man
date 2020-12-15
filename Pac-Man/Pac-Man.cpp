@@ -17,6 +17,7 @@ bool dead()
 		return 0;
 	}
 }
+
 int main()
 {
 	system("color F1");
@@ -69,6 +70,10 @@ begin:
 		{
 			try
 			{
+				if (Gnum == 0)
+				{
+					cout << "游戏已暂停并保存，输入移动键以继续" << endl;
+				}
 				PL.SetPlayerPosition(tempx, tempy, first);//player移动 L101-121
 				for (int g = 0; g < Gnum; g++)//Ghost移动
 				{
@@ -93,33 +98,45 @@ begin:
 		input = _getch();
 		if (input == 'w')
 		{
+			Gnum = 4;
 			tempx = -1;
 			tempy = 0;
 		}
 		else if (input == 'a')
 		{
+			Gnum = 4;
 			tempx = 0;
 			tempy = -1;
 		}
 		else if (input == 's')
 		{
+			Gnum = 4;
 			tempx = 1;
 			tempy = 0;
 		}
 		else if (input == 'd')
 		{
+			Gnum = 4;
 			tempx = 0;
 			tempy = 1;
 		}
 		else if (input == 27)
 		{
 			Write(first, PL, GH);
-			system("pause");
+			Gnum = 0;
+			tempx = 0;
+			tempy = 0;
+
+			//system("pause");
 		}
 	}
-	if (MessageBox(NULL, "You  win！ Press enter to restart. ", "You  win！", MB_OKCANCEL) == IDOK)
+	if (first.GetBeanNumber() == 0)
 	{
-		goto begin;
+		if (MessageBox(NULL, "You  win！ Press enter to restart. ", "You  win！", MB_OKCANCEL) == IDOK)
+		{
+			goto begin;
+		}
 	}
+	
 	return 0;
 }
