@@ -20,7 +20,7 @@ public:
 			GH[g / 2] = Ghost(InitGhPos[g], InitGhPos[g + 1], MAP);
 		}
 	}
-	void Resume(Map& Map, Player& PL, Ghost*& GH)
+	void LoadGame(Map& Map, Player& PL, Ghost*& GH)
 	{
 		Read(Map, PL, GH);
 	}
@@ -32,19 +32,18 @@ public:
 			<< endl
 			<< "        1. Begin a new game." << endl
 			<< endl
-			<< "        2. Resume." << endl
+			<< "        2. Load game." << endl
 			<< endl
 			<< "        3. Exit." << endl
 			<< endl;
-		char Select = 0;
-		Select = _getch();
+		char Select =  _getch();
 		switch (Select)
 		{
 		case '1':
 			BeginANewGame(MAP, PL, GH);
 			break;
 		case '2':
-			Resume(MAP, PL, GH);
+			LoadGame(MAP, PL, GH);
 			break;
 		case '3':
 			exit(0);
