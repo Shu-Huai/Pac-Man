@@ -7,58 +7,71 @@
 #include "Player.h"
 constexpr auto GhostNumber = 4;
 using namespace std;
-void BeginANewGame(Map& MAP, Player& PL, Ghost*& GH)
+class Interface
 {
-	PL = Player(18, 9, MAP);
-	int InitGhPos[GhostNumber * 2] = { 1,1,1,17,17,1,17,17 };
-	for (int g = 0; g < GhostNumber * 2; g += 2)
+public:
+	void BeginANewGame(Map& MAP, Player& PL, Ghost*& GH)
 	{
-		GH[g / 2] = Ghost(InitGhPos[g], InitGhPos[g + 1], MAP);
+		PL = Player(18, 9, MAP);
+		int InitGhPos[GhostNumber * 2] = { 1, 1, 1, 17, 17, 1, 17, 17 };
+		for (int g = 0; g < GhostNumber * 2; g += 2)
+		{
+			GH[g / 2] = Ghost(InitGhPos[g], InitGhPos[g + 1], MAP);
+		}
 	}
-}
-void Resume(Map& Map, Player& PL, Ghost*& GH)
-{
-	Read(Map, PL, GH);
-}
-void StartMenu(Map& MAP, Player& PL, Ghost*& GH)
-{
-	cout << "               Pac Man                " << endl
-		<< endl
-		<< "--------------------------------------" << endl
-		<< endl
-		<< "        1. Begin a new game." << endl
-		<< endl
-		<< "        2. Resume." << endl
-		<< endl
-		<< "        3. Exit." << endl
-		<< endl;
-	char Select = 0;
-	Select = _getch();
-	switch (Select)
+	void Resume(Map& Map, Player& PL, Ghost*& GH)
 	{
-	case '1':
-		BeginANewGame(MAP, PL, GH);
-		break;
-	case '2':
-		Resume(MAP, PL, GH);
-		break;
-	case '3':
-		exit(0);
+		Read(Map, PL, GH);
 	}
-}
-void PauseMenu(Map& MAP, Player& PL, Ghost*& GH)
-{
-	Write(MAP, PL, GH);
-}
+	void StartMenu(Map& MAP, Player& PL, Ghost*& GH)
+	{
+		cout << "               Pac Man                " << endl
+			<< endl
+			<< "--------------------------------------" << endl
+			<< endl
+			<< "        1. Begin a new game." << endl
+			<< endl
+			<< "        2. Resume." << endl
+			<< endl
+			<< "        3. Exit." << endl
+			<< endl;
+		char Select = 0;
+		Select = _getch();
+		switch (Select)
+		{
+		case '1':
+			BeginANewGame(MAP, PL, GH);
+			break;
+		case '2':
+			Resume(MAP, PL, GH);
+			break;
+		case '3':
+			exit(0);
+		}
+	}
+	void PauseMenu(Map& MAP, Player& PL, Ghost*& GH)
+	{
+		Write(MAP, PL, GH);
+	}
+	bool Dead()
+	{
+		return MessageBox(NULL, "You are dead. Press enter to retry. ", "You are dead. ", MB_OKCANCEL)== IDOK;
+	}
+	bool Win()
+	{
+		return MessageBox(NULL, "You  win！ Press enter to restart. ", "You  win！", MB_OKCANCEL) == IDOK;
+	}
+} Menu;
 int main()
 {
 begin:
 	system("color F1");
+	system("cls");
 	int Pause = 0;
 	Map MAP;
 	Player PL;
 	Ghost* GH = new Ghost[GhostNumber];
-	StartMenu(MAP, PL, GH);
+	Menu.StartMenu(MAP, PL, GH);
 	MAP.DrawMap(PL.GetScore());
 	system("pause");
 	int tempx = 0;
@@ -82,9 +95,8 @@ begin:
 				{
 					MAP.DrawMap(PL.GetScore());
 					delete[]GH;
-					if (MessageBox(NULL, "You are dead. Press enter to retry. ", "You are dead. ", MB_OKCANCEL) == IDOK)
+					if (Menu.Dead())
 					{
-						system("cls");
 						goto begin;
 					}
 					else
@@ -123,15 +135,14 @@ begin:
 		}
 		else if (input == 27)
 		{
-			PauseMenu(MAP, PL, GH);
+			Menu.PauseMenu(MAP, PL, GH);
 			Pause = 1;
 			tempx = 0;
 			tempy = 0;
 		}
 	}
-	if (MessageBox(NULL, "You  win！ Press enter to restart. ", "You  win！", MB_OKCANCEL) == IDOK)
+	if (Menu.Win())
 	{
-		system("cls");
 		goto begin;
 	}
 	else
