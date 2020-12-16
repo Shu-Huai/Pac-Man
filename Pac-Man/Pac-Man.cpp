@@ -26,6 +26,8 @@ int main()
 	int gx;//集中于gx、gy周围
 	int gy;
 
+	int Pause = 0;
+
 begin:
 	Map first;
 	Player PL;
@@ -68,62 +70,62 @@ begin:
 		char input;
 		while (!_kbhit())
 		{
+
+			if (Pause == 0)
+			{
 			try
 			{
-				if (Gnum == 0)
-				{
-					cout << "游戏已暂停并保存，输入移动键以继续" << endl;
-				}
 				PL.SetPlayerPosition(tempx, tempy, first);//player移动 L101-121
 				for (int g = 0; g < Gnum; g++)//Ghost移动
 				{
 					GH[g].Ghostmove(first);
 				}
 			}
-			catch (int)
-			{
+				catch (int)
+				{
+					first.DrawMap(PL.GetScore());
+					if (dead())
+					{
+						goto begin;
+					}
+					else
+					{
+						return 0;
+					}
+				}
 				first.DrawMap(PL.GetScore());
-				if (dead())
-				{
-					goto begin;
-				}
-				else
-				{
-					return 0;
-				}
+				Sleep(500);
 			}
-			first.DrawMap(PL.GetScore());
-			Sleep(500);
 		}
 		input = _getch();
 		if (input == 'w')
 		{
-			Gnum = 4;
 			tempx = -1;
 			tempy = 0;
+			Pause = 0;
 		}
 		else if (input == 'a')
 		{
-			Gnum = 4;
 			tempx = 0;
 			tempy = -1;
+			Pause = 0;
 		}
 		else if (input == 's')
 		{
-			Gnum = 4;
 			tempx = 1;
 			tempy = 0;
+			Pause = 0;
 		}
 		else if (input == 'd')
 		{
-			Gnum = 4;
 			tempx = 0;
 			tempy = 1;
+			Pause = 0;
 		}
 		else if (input == 27)
 		{
 			Write(first, PL, GH);
-			Gnum = 0;
+			Pause = 1;
 			tempx = 0;
 			tempy = 0;
 
