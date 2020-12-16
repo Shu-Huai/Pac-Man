@@ -7,6 +7,7 @@
 #include "Player.h"
 constexpr auto GhostNumber = 4;
 using namespace std;
+int main();
 class Interface
 {
 public:
@@ -53,18 +54,31 @@ public:
 	{
 		Write(MAP, PL, GH);
 	}
-	bool Dead()
+	void Dead()
 	{
-		return MessageBox(NULL, "You are dead. Press enter to retry. ", "You are dead. ", MB_OKCANCEL)== IDOK;
+		if (MessageBox(NULL, "You are dead. Press enter to retry. ", "You are dead. ", MB_OKCANCEL) == IDOK)
+		{
+			main();
+		}
+		else
+		{
+			exit(0);
+		}
 	}
-	bool Win()
+	void Win()
 	{
-		return MessageBox(NULL, "You  win！ Press enter to restart. ", "You  win！", MB_OKCANCEL) == IDOK;
+		if (MessageBox(NULL, "You  win！ Press enter to restart. ", "You  win！", MB_OKCANCEL) == IDOK)
+		{
+			main();
+		}
+		else
+		{
+			exit(0);
+		}
 	}
 } Menu;
 int main()
 {
-begin:
 	system("color F1");
 	system("cls");
 	int Pause = 0;
@@ -95,14 +109,7 @@ begin:
 				{
 					MAP.DrawMap(PL.GetScore());
 					delete[]GH;
-					if (Menu.Dead())
-					{
-						goto begin;
-					}
-					else
-					{
-						exit(0);
-					}
+					Menu.Dead();
 				}
 				MAP.DrawMap(PL.GetScore());
 				Sleep(500);
@@ -141,13 +148,6 @@ begin:
 			tempy = 0;
 		}
 	}
-	if (Menu.Win())
-	{
-		goto begin;
-	}
-	else
-	{
-		exit(0);
-	}
+	Menu.Win();
 	return 0;
 }
