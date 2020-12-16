@@ -5,33 +5,23 @@
 #include "Ghost.h"
 #include "Map.h"
 #include "Player.h"
+constexpr auto GhostNumber = 4;
 using namespace std;
-bool dead()
+void BeginANewGame(Map& MAP, Player& PL, Ghost*& GH)
 {
-	if (MessageBox(NULL, "You are dead. Press enter to retry. ", "You are dead. ", MB_OKCANCEL) == IDOK)
+	PL = Player(18, 9, MAP);
+	int InitGhPos[GhostNumber * 2] = { 1,1,1,17,17,1,17,17 };
+	for (int g = 0; g < GhostNumber * 2; g += 2)
 	{
-		return 1;
-	}
-	else
-	{
-		return 0;
+		GH[g / 2] = Ghost(InitGhPos[g], InitGhPos[g + 1], MAP);
 	}
 }
-
-int main()
+void Resume(Map& Map, Player& PL, Ghost*& GH)
 {
-	system("color F1");
-	int Gnum = 4;//鬼数量
-
-	int gx;//集中于gx、gy周围
-	int gy;
-
-	int Pause = 0;
-
-begin:
-	Map first;
-	Player PL;
-	Ghost* GH = new Ghost[Gnum];
+	Read(Map, PL, GH);
+}
+void StartMenu(Map& MAP, Player& PL, Ghost*& GH)
+{
 	cout << "               Pac Man                " << endl
 		<< endl
 		<< "--------------------------------------" << endl
@@ -47,53 +37,62 @@ begin:
 	switch (Select)
 	{
 	case '1':
-		gx = 4;
-		gy = 4;
-		PL = Player(18, 9, first);
-		for (int g = 0; g < Gnum; g++)
-		{
-			GH[g] = Ghost(gx++, gy++, first);
-		}
+		BeginANewGame(MAP, PL, GH);
 		break;
 	case '2':
-		Read(first, PL, GH);
+		Resume(MAP, PL, GH);
 		break;
 	case '3':
-		return 0;
-		break;
+		exit(0);
 	}
-	first.DrawMap(PL.GetScore());
+}
+void PauseMenu(Map& MAP, Player& PL, Ghost*& GH)
+{
+	Write(MAP, PL, GH);
+}
+int main()
+{
+begin:
+	system("color F1");
+	int Pause = 0;
+	Map MAP;
+	Player PL;
+	Ghost* GH = new Ghost[GhostNumber];
+	StartMenu(MAP, PL, GH);
+	MAP.DrawMap(PL.GetScore());
+	system("pause");
 	int tempx = 0;
 	int tempy = 0;
-	while (first.GetBeanNumber() != 0)
+	while (MAP.GetBeanNumber() != 0)
 	{
 		char input;
 		while (!_kbhit())
 		{
-
-			if (Pause == 0)
+			if (!Pause)
 			{
-			try
-			{
-				PL.SetPlayerPosition(tempx, tempy, first);//player移动 L101-121
-				for (int g = 0; g < Gnum; g++)//Ghost移动
+				try
 				{
-					GH[g].Ghostmove(first);
+					PL.SetPlayerPosition(tempx, tempy, MAP);//player移动 L101-121
+					for (int g = 0; g < GhostNumber; g++)//Ghost移动
+					{
+						GH[g].Ghostmove(MAP);
+					}
 				}
-			}
 				catch (int)
 				{
-					first.DrawMap(PL.GetScore());
-					if (dead())
+					MAP.DrawMap(PL.GetScore());
+					delete[]GH;
+					if (MessageBox(NULL, "You are dead. Press enter to retry. ", "You are dead. ", MB_OKCANCEL) == IDOK)
 					{
+						system("cls");
 						goto begin;
 					}
 					else
 					{
-						return 0;
+						exit(0);
 					}
 				}
-				first.DrawMap(PL.GetScore());
+				MAP.DrawMap(PL.GetScore());
 				Sleep(500);
 			}
 		}
@@ -124,21 +123,20 @@ begin:
 		}
 		else if (input == 27)
 		{
-			Write(first, PL, GH);
+			PauseMenu(MAP, PL, GH);
 			Pause = 1;
 			tempx = 0;
 			tempy = 0;
-
-			//system("pause");
 		}
 	}
-	if (first.GetBeanNumber() == 0)
+	if (MessageBox(NULL, "You  win！ Press enter to restart. ", "You  win！", MB_OKCANCEL) == IDOK)
 	{
-		if (MessageBox(NULL, "You  win！ Press enter to restart. ", "You  win！", MB_OKCANCEL) == IDOK)
-		{
-			goto begin;
-		}
+		system("cls");
+		goto begin;
 	}
-	
+	else
+	{
+		exit(0);
+	}
 	return 0;
 }

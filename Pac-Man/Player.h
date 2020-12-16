@@ -2,7 +2,7 @@
 #include "Map.h"
 class Player
 {
-private:
+protected:
 	int x, y;
 	int score;
 
