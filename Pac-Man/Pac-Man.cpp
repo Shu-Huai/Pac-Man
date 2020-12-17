@@ -37,7 +37,11 @@ public:
 			<< endl
 			<< "        3. Exit." << endl
 			<< endl;
-		char Select = _getch();
+		char Select = 0;
+		while (Select != '1' and Select != '2' and Select != '3' and Select != 27)
+		{
+			Select = _getch();
+		}
 		switch (Select)
 		{
 		case '1':
@@ -48,33 +52,40 @@ public:
 			break;
 		case '3':
 			exit(0);
+		case 27:
+			exit(0);
 		}
 	}
 	void PauseMenu(Map& MAP, Player& PL, Ghost*& GH)
 	{
-		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), COORD{ 0,4 });
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), COORD{ 0,3 });
 		cout << "--------------------------------------" << endl
 			<< "|              Pac Man               |" << endl
 			<< "|                                    |" << endl
 			<< "|------------------------------------|" << endl
-			<< "|                                    |" << endl
 			<< "|          1. Resume.                |" << endl
 			<< "|                                    |" << endl
 			<< "|          2. Load game.             |" << endl
 			<< "|                                    |" << endl
-			<< "|          3. Save and Exit.         |" << endl
+			<< "|          3. Save.                  |" << endl
+			<< "|                                    |" << endl
+			<< "|          4. Save and Exit.         |" << endl
 			<< "--------------------------------------" << endl;
-		char Select = _getch();
+		char Select = 0;
+		while (Select != '1' and Select != '2' and Select != '3' and Select != '4' and Select != 27)
+		{
+			Select = _getch();
+		}
 		switch (Select)
 		{
-		case '1':
-			return;
-			break;
 		case '2':
 			LoadGame(MAP, PL, GH);
 			system("cls");
 			break;
 		case '3':
+			Write(MAP, PL, GH);
+			break;
+		case '4':
 			Write(MAP, PL, GH);
 			StartMenu(MAP, PL, GH);
 		}
@@ -145,32 +156,25 @@ int main()
 		{
 			tempx = -1;
 			tempy = 0;
-			Pause = 0;
 		}
 		else if (input == 'a')
 		{
 			tempx = 0;
 			tempy = -1;
-			Pause = 0;
 		}
 		else if (input == 's')
 		{
 			tempx = 1;
 			tempy = 0;
-			Pause = 0;
 		}
 		else if (input == 'd')
 		{
 			tempx = 0;
 			tempy = 1;
-			Pause = 0;
 		}
 		else if (input == 27)
 		{
 			Menu.PauseMenu(MAP, PL, GH);
-			Pause = 0;
-			tempx = 0;
-			tempy = 0;
 		}
 	}
 	Menu.Win();
