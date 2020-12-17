@@ -11,6 +11,13 @@ int main();
 class Interface
 {
 public:
+	void SetConSoleCoordinate(int x, int y)
+	{
+		COORD POS;
+		POS.X = x;
+		POS.Y = y;
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), POS);
+	}
 	void BeginANewGame(Map& MAP, Player& PL, Ghost*& GH)
 	{
 		PL = Player(18, 9, MAP);
@@ -26,6 +33,7 @@ public:
 	}
 	void StartMenu(Map& MAP, Player& PL, Ghost*& GH)
 	{
+		system("cls");
 		cout << "               Pac Man                " << endl
 			<< endl
 			<< "--------------------------------------" << endl
@@ -36,7 +44,7 @@ public:
 			<< endl
 			<< "        3. Exit." << endl
 			<< endl;
-		char Select =  _getch();
+		char Select = _getch();
 		switch (Select)
 		{
 		case '1':
@@ -51,7 +59,32 @@ public:
 	}
 	void PauseMenu(Map& MAP, Player& PL, Ghost*& GH)
 	{
-		Write(MAP, PL, GH);
+		SetConSoleCoordinate(0, 4);
+		cout << "--------------------------------------" << endl
+			<< "|              Pac Man               |" << endl
+			<< "|                                    |" << endl
+			<< "|------------------------------------|" << endl
+			<< "|                                    |" << endl
+			<< "|          1. Resume.                |" << endl
+			<< "|                                    |" << endl
+			<< "|          2. Load game.             |" << endl
+			<< "|                                    |" << endl
+			<< "|          3. Save and Exit.         |" << endl
+			<< "--------------------------------------" << endl;
+		char Select = _getch();
+		switch (Select)
+		{
+		case '1':
+			return;
+			break;
+		case '2':
+			LoadGame(MAP, PL, GH);
+			system("cls");
+			break;
+		case '3':
+			Write(MAP, PL, GH);
+			StartMenu(MAP, PL, GH);
+		}
 	}
 	void Dead()
 	{
@@ -79,7 +112,6 @@ public:
 int main()
 {
 	system("color F1");
-	system("cls");
 	int Pause = 0;
 	Map MAP;
 	Player PL;
@@ -87,6 +119,7 @@ int main()
 	Menu.StartMenu(MAP, PL, GH);
 	MAP.DrawMap(PL.GetScore());
 	system("pause");
+	system("cls");
 	int tempx = 0;
 	int tempy = 0;
 	while (MAP.GetBeanNumber() != 0)
@@ -142,7 +175,7 @@ int main()
 		else if (input == 27)
 		{
 			Menu.PauseMenu(MAP, PL, GH);
-			Pause = 1;
+			Pause = 0;
 			tempx = 0;
 			tempy = 0;
 		}
