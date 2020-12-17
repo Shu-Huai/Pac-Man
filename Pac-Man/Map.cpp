@@ -1,19 +1,27 @@
 #include <iostream>
+#include<windows.h>
 #include "Map.h"
 using namespace std;
+void SetConSoleCoordinate(int x, int y)
+{
+	COORD pos;
+	pos.X = x;
+	pos.Y = y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+}
 void Map::DrawMap(int score)
 {
-	system("cls");
 	string MapElems[5] = { "¡ö", "¡£" ,"  " ,"¡ï" ,"‡å" };
 	for (int i = 0; i < 19; i++)
 	{
 		for (int j = 0; j < 19; j++)
 		{
+			SetConSoleCoordinate(j * 2, i);
 			cout << MapElems[_map[i][j]];
 		}
-		cout << endl;
 	}
-	cout << "Your score is: " << score << endl;
+	cout << endl
+		<< "Your score is: " << score << endl;
 }
 int Map::GetBeanNumber()
 {
