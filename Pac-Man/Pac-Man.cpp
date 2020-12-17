@@ -24,12 +24,11 @@ public:
 	{
 		try
 		{
-			MessageBox(NULL, "No data files.", "Error.", MB_OK);
 			Read(MAP, PL, GH);
 		}
 		catch (int)
 		{
-
+			MessageBox(NULL, "No data files.", "Error.", MB_OK);
 			BeginANewGame(MAP, PL, GH);
 		}
 	}
