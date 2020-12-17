@@ -2,13 +2,6 @@
 #include<windows.h>
 #include "Map.h"
 using namespace std;
-void SetConSoleCoordinate(int x, int y)
-{
-	COORD pos;
-	pos.X = x;
-	pos.Y = y;
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-}
 void Map::DrawMap(int score)
 {
 	string MapElems[5] = { "¡ö", "¡£" ,"  " ,"¡ï" ,"‡å" };
@@ -16,7 +9,7 @@ void Map::DrawMap(int score)
 	{
 		for (int j = 0; j < 19; j++)
 		{
-			SetConSoleCoordinate(j * 2, i);
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), COORD{ short(j * 2),short(i) });
 			cout << MapElems[_map[i][j]];
 		}
 	}

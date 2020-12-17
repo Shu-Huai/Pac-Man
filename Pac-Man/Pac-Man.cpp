@@ -11,13 +11,6 @@ int main();
 class Interface
 {
 public:
-	void SetConSoleCoordinate(int x, int y)
-	{
-		COORD POS;
-		POS.X = x;
-		POS.Y = y;
-		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), POS);
-	}
 	void BeginANewGame(Map& MAP, Player& PL, Ghost*& GH)
 	{
 		PL = Player(18, 9, MAP);
@@ -59,7 +52,7 @@ public:
 	}
 	void PauseMenu(Map& MAP, Player& PL, Ghost*& GH)
 	{
-		SetConSoleCoordinate(0, 4);
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), COORD{ 0,4 });
 		cout << "--------------------------------------" << endl
 			<< "|              Pac Man               |" << endl
 			<< "|                                    |" << endl
