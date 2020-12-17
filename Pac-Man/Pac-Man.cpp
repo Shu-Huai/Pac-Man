@@ -13,6 +13,7 @@ class Interface
 public:
 	void BeginANewGame(Map& MAP, Player& PL, Ghost*& GH)
 	{
+		MAP = Map();
 		PL = Player(18, 9, MAP);
 		int InitGhPos[GhostNumber * 2] = { 1, 1, 1, 17, 17, 1, 17, 17 };
 		for (int i = 0; i < GhostNumber * 2; i += 2)
@@ -136,7 +137,6 @@ int main()
 	Ghost* GH = new Ghost[GhostNumber];
 	Menu.StartMenu(MAP, PL, GH);
 	MAP.DrawMap(PL.GetScore());
-	system("pause");
 	system("cls");
 	int tempx = 0;
 	int tempy = 0;
@@ -189,6 +189,8 @@ int main()
 		else if (input == 27)
 		{
 			Menu.PauseMenu(MAP, PL, GH);
+			tempx = 0;
+			tempy = 0;
 		}
 	}
 	Menu.Win();
