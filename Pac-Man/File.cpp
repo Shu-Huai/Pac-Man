@@ -4,10 +4,6 @@ using namespace std;
 void  Write(Map& MAP, Player& PL, Ghost*& GH)
 {
 	fstream MapData("MapData.dat", ios::out | ios::binary | ios::trunc);
-	if (!MapData)
-	{
-		return;
-	}
 	MapData.write((char*)&MAP, sizeof(Map));
 	MapData.write((char*)&PL, sizeof(Player));
 	for (int i = 0; i < 4; i++)
@@ -22,7 +18,7 @@ void Read(Map& MAP, Player& PL, Ghost*& GH)
 	ifstream MapData("MapData.dat", ios::in | ios::binary);
 	if (!MapData)
 	{
-		return;
+		throw(int)0;
 	}
 	MapData.read((char*)&MAP, sizeof(Map));
 	MapData.read((char*)&PL, sizeof(Player));

@@ -22,7 +22,16 @@ public:
 	}
 	void LoadGame(Map& MAP, Player& PL, Ghost*& GH)
 	{
-		Read(MAP, PL, GH);
+		try
+		{
+			MessageBox(NULL, "No data files.", "Error.", MB_OK);
+			Read(MAP, PL, GH);
+		}
+		catch (int)
+		{
+
+			BeginANewGame(MAP, PL, GH);
+		}
 	}
 	void StartMenu(Map& MAP, Player& PL, Ghost*& GH)
 	{
@@ -112,10 +121,16 @@ public:
 			exit(0);
 		}
 	}
+	void SetConsoleSize()
+	{
+		SMALL_RECT rc = { 0, 0, 38, 21 };
+		SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), true, &rc);
+	}
 } Menu;
 int main()
 {
 	system("color F1");
+	Menu.SetConsoleSize();
 	int Pause = 0;
 	Map MAP;
 	Player PL;
