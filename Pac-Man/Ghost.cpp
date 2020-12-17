@@ -3,29 +3,29 @@
 using namespace std;
 Ghost::Ghost()
 {
-	x = 0;
-	y = 0;
-	O = 0;
+	_x = 0;
+	_y = 0;
+	_originelem = 0;
 }
 Ghost::Ghost(int X, int Y, Map& M)
 {
-	x = X;
-	y = Y;
-	M.map[X][Y] = G;
-	O = 1;
+	_x = X;
+	_y = Y;
+	M._map[X][Y] = G;
+	_originelem = 1;
 }
 int Ghost::GetPX()
 {
-	return x;
+	return _x;
 }
 int Ghost::GetPY()
 {
-	return y;
+	return _y;
 }
 void Ghost::Ghostmove(Map& M)
 {
-	int OriX = x;
-	int OriY = y;
+	int OriX = _x;
+	int OriY = _y;
 	int FinalX = 0;
 	int FinalY = 0;
 	int myrand = 0;
@@ -68,14 +68,14 @@ void Ghost::Ghostmove(Map& M)
 		{
 			FinalY += 19;
 		}
-		if (M.map[FinalX][FinalY] != W && M.map[FinalX][FinalY] != G)
+		if (M._map[FinalX][FinalY] != W && M._map[FinalX][FinalY] != G)
 		{
-			M.map[x][y] = O;
-			x = FinalX;
-			y = FinalY;
-			O = M.map[FinalX][FinalY];
-			M.map[x][y] = G;
-			if (O == P)
+			M._map[_x][_y] = _originelem;
+			_x = FinalX;
+			_y = FinalY;
+			_originelem = M._map[FinalX][FinalY];
+			M._map[_x][_y] = G;
+			if (_originelem == P)
 			{
 				throw int(0);
 			}
@@ -83,8 +83,8 @@ void Ghost::Ghostmove(Map& M)
 		}
 		else
 		{
-			x = OriX;
-			y = OriY;
+			_x = OriX;
+			_y = OriY;
 		}
 	}
 	mov = 0;

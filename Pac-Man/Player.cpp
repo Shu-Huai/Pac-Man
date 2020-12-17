@@ -3,68 +3,68 @@
 using namespace std;
 Player::Player()
 {
-	x = 0;
-	y = 0;
-	score = 0;
+	_x = 0;
+	_y = 0;
+	_score = 0;
 }
 Player::Player(int X, int Y, Map& M)
 {
-	x = X;
-	y = Y;
-	M.map[X][Y] = P;
-	score = 0;
+	_x = X;
+	_y = Y;
+	M._map[X][Y] = P;
+	_score = 0;
 }
 int Player::GetPX() const
 {
-	return x;
+	return _x;
 }
 int Player::GetPY() const
 {
-	return y;
+	return _y;
 }
 int Player::GetScore() const
 {
-	return score;
+	return _score;
 }
 void Player::SetPlayerPosition(int X, int Y, Map& M)
 {
-	int tempx = x;
-	int tempy = y;
-	x += X;
-	y += Y;
-	if (x > 18)
+	int tempx = _x;
+	int tempy = _y;
+	_x += X;
+	_y += Y;
+	if (_x > 18)
 	{
-		x -= 19;
+		_x -= 19;
 	}
-	if (y > 18)
+	if (_y > 18)
 	{
-		y -= 19;
+		_y -= 19;
 	}
-	if (x < 0)
+	if (_x < 0)
 	{
-		x += 19;
+		_x += 19;
 	}
-	if (y < 0)
+	if (_y < 0)
 	{
-		y += 19;
+		_y += 19;
 	}
-	if (M.map[x][y] != W)
+	if (M._map[_x][_y] != W)
 	{
-		if (M.map[x][y] == G)
+		if (M._map[_x][_y] == G)
 		{
-			M.map[tempx][tempy] = K;
+			M._map[tempx][tempy] = K;
 			throw (int)0;
 		}
-		if (M.map[x][y] == B)
+		if (M._map[_x][_y] == B)
 		{
-			score++;
+			_score++;
 		}
-		M.map[tempx][tempy] = K;
-		M.map[x][y] = P;
+		M._map[tempx][tempy] = K;
+		M._map[_x][_y] = P;
 	}
 	else
 	{
-		x = tempx;
-		y = tempy;
+		_x = tempx;
+		_y = tempy;
 	}
 }

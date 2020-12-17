@@ -3,8 +3,8 @@
 class Player
 {
 protected:
-	int x, y;
-	int score;
+	int _x, _y;
+	int _score;
 
 public:
 	Player();

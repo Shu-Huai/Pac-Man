@@ -15,14 +15,14 @@ public:
 	{
 		PL = Player(18, 9, MAP);
 		int InitGhPos[GhostNumber * 2] = { 1, 1, 1, 17, 17, 1, 17, 17 };
-		for (int g = 0; g < GhostNumber * 2; g += 2)
+		for (int i = 0; i < GhostNumber * 2; i += 2)
 		{
-			GH[g / 2] = Ghost(InitGhPos[g], InitGhPos[g + 1], MAP);
+			GH[i / 2] = Ghost(InitGhPos[i], InitGhPos[i + 1], MAP);
 		}
 	}
-	void LoadGame(Map& Map, Player& PL, Ghost*& GH)
+	void LoadGame(Map& MAP, Player& PL, Ghost*& GH)
 	{
-		Read(Map, PL, GH);
+		Read(MAP, PL, GH);
 	}
 	void StartMenu(Map& MAP, Player& PL, Ghost*& GH)
 	{
@@ -99,9 +99,9 @@ int main()
 				try
 				{
 					PL.SetPlayerPosition(tempx, tempy, MAP);//player移动 L101-121
-					for (int g = 0; g < GhostNumber; g++)//Ghost移动
+					for (int i = 0; i < GhostNumber; i++)//Ghost移动
 					{
-						GH[g].Ghostmove(MAP);
+						GH[i].Ghostmove(MAP);
 					}
 				}
 				catch (int)

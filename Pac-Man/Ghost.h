@@ -3,8 +3,8 @@
 class Ghost
 {
 private:
-	int x, y;
-	int O;
+	int _x, _y;
+	int _originelem;
 
 public:
 	Ghost();

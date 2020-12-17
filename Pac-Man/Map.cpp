@@ -4,30 +4,12 @@ using namespace std;
 void Map::DrawMap(int score)
 {
 	system("cls");
+	string MapElems[5] = { "¡ö", "¡£" ,"  " ,"¡ï" ,"‡å" };
 	for (int i = 0; i < 19; i++)
 	{
 		for (int j = 0; j < 19; j++)
 		{
-			if (map[i][j] == 0)
-			{
-				cout << "¡ö";
-			}
-			else if (map[i][j] == 1)
-			{
-				cout << "¡£";
-			}
-			else if (map[i][j] == 2)
-			{
-				cout << "  ";
-			}
-			else if (map[i][j] == 3)
-			{
-				cout << "¡ï";
-			}
-			else if (map[i][j] == 4)
-			{
-				cout << "‡å";
-			}
+			cout << MapElems[_map[i][j]];
 		}
 		cout << endl;
 	}
@@ -40,7 +22,7 @@ int Map::GetBeanNumber()
 	{
 		for (int j = 0; j < 19; j++)
 		{
-			if (map[i][j] == B)
+			if (_map[i][j] == B)
 			{
 				count++;
 			}
@@ -50,5 +32,5 @@ int Map::GetBeanNumber()
 }
 void Map::SetMap(int X, int Y, int condition)
 {
-	map[X][Y] = condition;
+	_map[X][Y] = condition;
 }

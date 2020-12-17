@@ -9,7 +9,7 @@ class Map
 	friend class Player;
 	friend class Ghost;
 protected:
-	int map[19][19] = {
+	int _map[19][19] = {
 		W, W, W, W, W, W, W, W, W, B, W, W, W, W, W, W, W, W, W,
 		W, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, B, W,
 		W, B, B, W, B, B, W, W, W, B, W, W, W, B, B, W, B, B, W,
