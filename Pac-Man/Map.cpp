@@ -5,16 +5,16 @@ using namespace std;
 void Map::DrawMap(int score)
 {
 	string MapElems[5] = { "¡ö", "¡£" ,"  " ,"¡ï" ,"‡å" };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), COORD{ 0,0 });
 	for (int i = 0; i < 19; i++)
 	{
 		for (int j = 0; j < 19; j++)
 		{
-			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), COORD{ short(j * 2),short(i) });
 			cout << MapElems[_map[i][j]];
 		}
+		cout << endl;
 	}
-	cout << endl
-		<< "Your score is: " << score << endl;
+	cout << "Your score is: " << score << endl;
 }
 int Map::GetBeanNumber()
 {
